@@ -13,27 +13,21 @@ find_package(visualization_msgs REQUIRED)
 
 include_directories(include)
 
-add_library(${PROJECT_NAME}_lib
-  src/obstacle_filter_node.cpp
-)
-ament_target_dependencies(${PROJECT_NAME}_lib
+add_executable(perception_node src/obstacle_filter_node.cpp)
+ament_target_dependencies(perception_node
   rclcpp
   rclcpp_lifecycle
   sensor_msgs
   visualization_msgs
 )
 
-add_executable(perception_node src/main.cpp)
-target_link_libraries(perception_node ${PROJECT_NAME}_lib)
-
-install(TARGETS
-  ${PROJECT_NAME}_lib
-  perception_node
-  DESTINATION lib/${PROJECT_NAME}
-)
+install(TARGETS perception_node
+  DESTINATION lib/${PROJECT_NAME})
 
 install(DIRECTORY include/
-  DESTINATION include
-)
+  DESTINATION include)
+
+install(DIRECTORY launch
+  DESTINATION share/${PROJECT_NAME})
 
 ament_package()
